@@ -117,6 +117,19 @@ export class AppComponent {
 }
 ```
 
+`classSetContent` - add or overide a class method or a property
+```js
+import { classSetContent } from 'helpful-decorators';
+import { css } from 'glamor'
+
+@classSetContent("glamor", css)
+@Component({
+  selector: "red",
+  template: `<p class="{{glamor({color:'red'})}}"><ng-content></ng-content></p>`
+})
+export class RedText { }
+```
+
 ### Roadmap
 
  - ~~delay~~

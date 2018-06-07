@@ -1,4 +1,4 @@
-import { timeout, debounce, throttle, once } from '../src';
+import { timeout, debounce, throttle, once, classSetContent } from '../src';
 jest.mock('lodash.debounce');
 jest.mock('lodash.throttle');
 import * as throttleFn from 'lodash.throttle';
@@ -87,6 +87,26 @@ describe('Decorators', () => {
       instance.method();
       expect(consoleSpy).toBeCalled();
       expect(consoleSpy).toHaveBeenCalledTimes(1);
+      consoleSpy.mockReset()
+      consoleSpy.mockRestore()
+    });
+  })
+
+  describe('classSetContent', function () {
+    @classSetContent('value', { data: 1 })
+    @classSetContent('method', () => console.warn('Called!'))
+    class TestEmpty {
+    }
+    it('should set content in the class', function () {
+      const instance = new TestEmpty();
+      const consoleSpy = jest.spyOn(console, 'warn');
+      instance.method();
+      instance.method();
+      expect(instance.value).toEqual({ data: 1 })
+      expect(consoleSpy).toBeCalled();
+      expect(consoleSpy).toHaveBeenCalledTimes(2);
+      consoleSpy.mockReset()
+      consoleSpy.mockRestore()
     });
   })
 });
